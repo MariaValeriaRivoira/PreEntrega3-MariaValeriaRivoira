@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    
+    <title>Document</title>
+</head>
+<body>
+        <title>Calcular nota Promedio</title>
+        <div class="campos">
+            <h1>Calcular nota Promedio</h1>
+            <div id="ingCarrera">
+                <label>Ingresar nombre de la carrera</label>
+                <input type="text" id="inputCarrera">    
+                <button id="botonCarrera" class="boton"  onclick="cargarCarrera()">Cargar</button>
+            </div>
+            <div id="ingMaterias">
+                <label>Ingresar nombre de la materia</label>
+                <input type="text" id="inputMateria">
+                <br>
+                <br>
+                <label>Ingresar nota</label>
+                <input type="text" id="inputNota">    
+                <button id="botonMateria" class="boton"  onclick="cargarMateria()">Cargar Materia</button>
+                
+                <button id="botonNoMasMaterias" class="boton"  onclick="noMasMaterias()">NO Cargar Mas Materias y calcular PROMEDIO</button>
+            </div>
+            <div id="resultado">
+                <h2>el promedio es :</h2>               
+                <p id="parrafo"></p>
+            </div>
+            <script>
+
+                
+                function cargarCarrera() {
+                    let listaMaterias = [ ];
+                    let c = document.getElementById("inputCarrera").value;
+                    let carrera = [];
+                    carrera.nombre = c;
+                    carrera.listaMaterias = listaMaterias;
+                    document.getElementById("ingMaterias").style.display = "block";
+                    document.getElementById("ingCarrera").style.display = "none";
+                    localStorage.setItem( "carrera", JSON.stringify (carrera) );
+                    localStorage.setItem( "listaMaterias", JSON.stringify (listaMaterias) );
+                };
+                function cargarMateria(){
+                    let nombre = document.getElementById("inputMateria").value;
+                    let nota = document.getElementById("inputNota").value;
+                    
+                    let materia = newMateria( nombre, nota );
+                    
+                    let listaMaterias = JSON.parse(localStorage.getItem("listaMaterias"));
+                   
+                    listaMaterias.push( materia);
+                    localStorage.setItem( "listaMaterias", JSON.stringify(listaMaterias) );
+                    document.getElementById("inputMateria").value = "";
+                    document.getElementById("inputNota").value = "";
+                };
+                function newMateria( nombre, notaPromedio ) {
+                    let materia = {
+                    "nombre" : nombre,
+                    "nota" : notaPromedio};
+                    return materia;
+                };
+                function noMasMaterias(){
+                    document.getElementById("resultado").style.display = "block";
+                    document.getElementById("ingMaterias").style.display = "none";
+                    let prom = calcularPromedio();
+                   
+                    document.getElementById("parrafo").innerHTML=' '+prom;
+                };
+                function calcularPromedio(){
+
+                    
+                    
+                    let listaMaterias = JSON.parse(localStorage.getItem("listaMaterias"));
+                    console.log(listaMaterias);
+                    let suma = 0;
+                    
+                    for(var x = 0; x < listaMaterias.length; x++){
+                        let m= listaMaterias[x];
+                        
+                        let n = parseInt(m.nota);
+                       
+                        suma += n
+                        }
+                    let promedio = suma / listaMaterias.length;                    
+                   
+                    return (promedio);
+                
+            }
+
+
+
+
+                
+                </script>
+        </div>
+        
+    
+</body>
+</html>
